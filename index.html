@@ -144,6 +144,18 @@
               <button class="primary-action" type="submit">プロフィールを保存</button>
             </form>
             <div id="profile-overview" class="profile-overview"></div>
+            <div class="weight-section">
+              <div class="section-head"><div><div class="eyebrow">WEIGHT TRACKER</div><h2>毎日の体重記録</h2></div></div>
+              <p class="diary-hint">朝など、なるべく同じ条件で測ると変化がわかりやすくなります。</p>
+              <form id="weight-form" class="weight-form">
+                <label>計測日<input type="date" id="weight-date" required></label>
+                <label>体重（kg）<input type="number" id="weight-kg" min="25" max="250" step="0.1" required placeholder="例：57.0"></label>
+                <button class="primary-action" type="submit">体重を保存</button>
+              </form>
+              <div class="weight-stats" id="weight-stats"></div>
+              <div class="weight-chart" id="weight-chart" aria-label="直近の体重推移"></div>
+              <div id="weight-records" class="weight-records"></div>
+            </div>
             <p class="diary-hint">複数ユーザーに対応していますが、アカウント認証や端末間同期はありません。記録はこのブラウザーの中だけに保存されます。</p>
           </div>
         </section>
