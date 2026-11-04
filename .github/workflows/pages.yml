@@ -22,6 +22,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Check JavaScript syntax
+        run: |
+          node --check app.js
+          node --check features.js
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload static files
