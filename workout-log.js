@@ -8,7 +8,11 @@
     {id:'chat-side',name:'インタッチ→サイドステップ→インタッチ',reps:10,sets:1,note:''},
     {id:'chat-abs',name:'腹筋',reps:20,sets:2,note:''},
     {id:'chat-push',name:'腕立て伏せ',reps:10,sets:2,note:''},
-    {id:'chat-kick',name:'キックフォーム（右・左）',reps:10,sets:1,note:'右・左それぞれ10回'}
+    {id:'chat-kick',name:'キックフォーム（右・左）',reps:10,sets:1,note:'右・左それぞれ10回'},
+    {id:'chat-curl-1104',name:'アームカール（座位）',reps:20,sets:2,note:'片手500mlペットボトル2本（約1kg）'},
+    {id:'chat-press-1104',name:'ショルダープレス（座位）',reps:20,sets:2,note:'片手500mlペットボトル2本（約1kg）'},
+    {id:'chat-raise-1104',name:'サイドレイズ（座位）',reps:20,sets:2,note:'片手500mlペットボトル2本（約1kg）'},
+    {id:'chat-scap-1104',name:'肩甲骨寄せ（座位）',reps:20,sets:2,note:'腕の重さで実施したか器具使用か未確認'}
   ];
   const proposed=[
     {name:'ショルダープレス（座位）',reps:10,sets:2,note:'肩／ペットボトルなど軽い負荷'},
@@ -72,7 +76,7 @@
     {
       const pending=original.filter(x=>!get(DATE).some(y=>y.id===x.id));
       box.hidden=!pending.length;
-      box.innerHTML=pending.length?`<h3>11月4日に実施した5種目（会話の記録）</h3><p>端末内の記録はGitHubから直接書き換えられないため、ワンタップでこのユーザーに保存できます。</p><ul>${pending.map(x=>`<li>${esc(x.name)}：${x.reps}回 × ${x.sets}セット</li>`).join('')}</ul><button type="button" id="import-nov4-exercises">11/4の実績を取り込む（残り${pending.length}種目）</button>`:'';
+      box.innerHTML=pending.length?`<h3>11月4日に実施した9種目（会話の記録）</h3><p>端末内の記録はGitHubから直接書き換えられないため、ワンタップでこのユーザーに保存できます。</p><ul>${pending.map(x=>`<li>${esc(x.name)}：${x.reps}回 × ${x.sets}セット</li>`).join('')}</ul><button type="button" id="import-nov4-exercises">11/4の実績を取り込む（残り${pending.length}種目）</button>`:'';
     }
     $('upperbody-options').innerHTML=proposed.map((x,i)=>`<div class="upperbody-item"><div><strong>${esc(x.name)}</strong><small>${x.reps}回 × ${x.sets}セット・${esc(x.note)}</small></div><button type="button" data-add-upper="${i}">実施したら記録</button></div>`).join('');
     const dash=$('home-exercise-journal');
