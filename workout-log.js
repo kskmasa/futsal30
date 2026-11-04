@@ -33,7 +33,7 @@
     .workout-log-item button{background:#f9eae9;color:#995e5e;border:0;border-radius:8px;padding:8px 12px;font-size:11px;cursor:pointer}
     .upperbody-item button,.workout-import button{border:0;border-radius:8px;padding:9px 12px;background:#276044;color:#fff;font-size:11px;font-weight:700;cursor:pointer}
     .upperbody-item button{max-width:108px}
-    .workout-import{background:#f3f9f3;border:1px solid #d4e8d7;border-radius:11px;padding:15px;margin:15px 0}
+    .workout-import[hidden]{display:none}.workout-import{background:#f3f9f3;border:1px solid #d4e8d7;border-radius:11px;padding:15px;margin:15px 0}
     .workout-import h3{font-size:13px;color:#346b4c}.workout-import p,.workout-import li{font-size:11px;color:#698774;line-height:1.8}
     .workout-import ul{padding-left:20px;margin-bottom:14px}
     .workout-log-form{padding-top:16px;border-top:1px solid #e7eee8}
@@ -69,11 +69,11 @@
     $('workout-log-stats').innerHTML=`<span>${esc(selected)}</span><span>${entries.length}種目</span><span>${sum}セット</span>`;
     $('workout-log-items').innerHTML=entries.length?entries.map(x=>`<div class="workout-log-item"><div><strong>${esc(x.name)}</strong><small>${esc(x.reps)}回 × ${esc(x.sets)}セット${x.note?' ／ '+esc(x.note):''}</small></div><button type="button" data-remove-exercise="${esc(x.id)}">削除</button></div>`).join(''):'<p class="diary-hint">まだこの日の実績はありません。</p>';
     const box=$('workout-import');
-    if(selected===DATE){
-      const pending=original.filter(x=>!entries.some(y=>y.id===x.id));
+    {
+      const pending=original.filter(x=>!get(DATE).some(y=>y.id===x.id));
       box.hidden=!pending.length;
       box.innerHTML=pending.length?`<h3>11月4日に実施した5種目（会話の記録）</h3><p>端末内の記録はGitHubから直接書き換えられないため、ワンタップでこのユーザーに保存できます。</p><ul>${pending.map(x=>`<li>${esc(x.name)}：${x.reps}回 × ${x.sets}セット</li>`).join('')}</ul><button type="button" id="import-nov4-exercises">11/4の実績を取り込む（残り${pending.length}種目）</button>`:'';
-    }else{box.hidden=true;box.innerHTML='';}
+    }
     $('upperbody-options').innerHTML=proposed.map((x,i)=>`<div class="upperbody-item"><div><strong>${esc(x.name)}</strong><small>${x.reps}回 × ${x.sets}セット・${esc(x.note)}</small></div><button type="button" data-add-upper="${i}">実施したら記録</button></div>`).join('');
     const dash=$('home-exercise-journal');
     if(dash){const d=typeof localISO==='function'?localISO():DATE;const today=db[userId()]?.[d]||[];dash.innerHTML=`<strong>今日の実績：${today.length}種目・${today.reduce((n,x)=>n+(Number(x.sets)||0),0)}セット</strong><small>運動タブで実施記録を追加・確認できます。未実施の提案は含まれません。</small>`;}
@@ -85,8 +85,8 @@
     if(add({name,reps,sets,note})){$('workout-log-form').reset();$('workout-sets').value=2;render();}
   });
   document.addEventListener('click',e=>{
-    if(e.target.closest('#import-nov4-exercises')&&selected===DATE){
-      const rest=original.filter(x=>!get(DATE).some(y=>y.id===x.id));mutate(DATE,a=>[...a,...rest]);render();return;
+    if(e.target.closest('#import-nov4-exercises')){
+      const rest=original.filter(x=>!get(DATE).some(y=>y.id===x.id));mutate(DATE,a=>[...a,...rest]);selected=DATE;render();return;
     }
     const remove=e.target.closest('[data-remove-exercise]');
     if(remove){mutate(selected,a=>a.filter(x=>x.id!==remove.dataset.removeExercise));render();return;}
