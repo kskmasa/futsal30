@@ -41,6 +41,7 @@
         <button class="nav-item" data-page="training"><svg><use href="#i-activity"/></svg>トレーニング</button>
         <button class="nav-item" data-page="meals"><svg><use href="#i-utensils"/></svg>食事メニュー</button>
         <button class="nav-item" data-page="shopping"><svg><use href="#i-bag"/></svg>買い物リスト</button>
+        <button class="nav-item" data-page="profile"><svg><use href="#i-grid"/></svg>プロフィール</button>
       </nav>
       <div class="side-bottom">
         <div class="side-quote"><span class="side-quote-dot"></span> SMALL STEPS, EVERY DAY.<p>できることを、ひとつずつ。</p></div>
@@ -52,7 +53,7 @@
       <header class="topbar">
         <div class="mobile-brand">FUTSAL<span>30</span></div>
         <div class="topbar-title" id="topbar-title">ダッシュボード</div>
-        <div class="topbar-right"><span class="status-dot"></span> 30-DAY CHALLENGE <span class="topbar-date" id="topbar-date"></span></div>
+        <div class="topbar-right"><span id="topbar-user" class="topbar-user"></span><span class="status-dot"></span> 30-DAY CHALLENGE <span class="topbar-date" id="topbar-date"></span></div>
       </header>
 
       <main id="main" class="main-content" tabindex="-1">
@@ -70,16 +71,16 @@
           <div class="metric-grid">
             <div class="metric-card"><span class="metric-label">チャレンジ進行</span><div class="metric-main"><strong id="metric-day">DAY 02</strong><span>/ 31日</span></div><div class="metric-track"><span id="day-progress" style="width:6%"></span></div></div>
             <div class="metric-card"><span class="metric-label">トレーニング達成</span><div class="metric-main"><strong id="metric-done">0</strong><span id="metric-done-total">/ 0 セッション</span></div><div class="mini-stat">まずは今日の一歩から</div></div>
-            <div class="metric-card"><span class="metric-label">1日の摂取目標（目安）</span><div class="metric-main"><strong>2,200<span class="metric-unit">–</span>2,500</strong><span>kcal</span></div><div class="mini-stat">たんぱく質：80–100g / 日</div></div>
+            <div class="metric-card"><span class="metric-label">1日の摂取目標（目安）</span><div class="metric-main"><strong id="home-kcal-target">設定待ち</strong><span>kcal</span></div><div class="mini-stat"><span id="home-protein-target">プロフィールから体重を設定</span></div></div>
           </div>
 
           <div class="content-grid">
             <div class="card today-card">
               <div class="section-head"><div><div class="eyebrow">TODAY'S ACTION</div><h2>今日やること</h2></div><span class="date-chip" id="today-chip"></span></div>
-              <div id="today-workout"></div>
+              <div id="today-workout"></div><div id="today-activity-blocks" class="daily-activity-blocks"></div>
               <div class="separator"></div>
-              <h3 class="subsection-title">食事チェック</h3>
-              <div id="today-meals" class="daily-meal-checks"></div>
+              <h3 class="subsection-title">食事チェック <small>（簡易チェック）</small></h3>
+              <div id="today-meals" class="daily-meal-checks"></div><div class="diary-today" id="home-food-totals"></div><button class="outline-btn" data-jump="meals">食事を詳しく記録する ↗</button>
             </div>
             <div class="right-stack">
               <div class="card progress-card">
@@ -87,35 +88,65 @@
                 <div class="progress-info"><div class="progress-donut" id="progress-donut"><div><strong id="progress-percent">0%</strong><span>完了</span></div></div><div class="progress-copy"><strong id="progress-count">0 セッション達成</strong><p>少しずつ身体を慣らして、無理せず続けよう。</p></div></div>
                 <button class="text-link" data-jump="training">すべてのメニューを見る <svg><use href="#i-arrow"/></svg></button>
               </div>
-              <div class="tip-card"><div class="tip-heading"><svg><use href="#i-heart"/></svg> 体づくりのポイント</div><p>今は減量よりも、食べて回復すること。173cm / 57kgなら、まず体重を落とさずに筋力と持久力をつけよう。</p><button data-jump="meals">食事プランを見る <svg><use href="#i-chevron"/></svg></button></div>
+              <div class="tip-card"><div class="tip-heading"><svg><use href="#i-heart"/></svg> 体づくりのポイント</div><p>今は減量よりも、食べて回復すること。体格を設定して、食事と運動の記録を続けよう。食事の栄養値は目安なので商品ラベルを確認してね。</p><button data-jump="meals">食事プランを見る <svg><use href="#i-chevron"/></svg></button></div>
             </div>
           </div>
-          <div class="safety-note" role="note"><svg><use href="#i-alert"/></svg><div><strong>運動を始める前に</strong><p>健診で精密検査が必要とされ、まだ受診していない場合は、高強度のダッシュやインターバル運動を始める前に医師へ相談してください。胸痛・めまい・異常な息切れが出たら中止してください。</p></div></div>
         </section>
 
         <section class="page" id="page-training" aria-labelledby="training-title">
-          <div class="page-intro"><div><div class="eyebrow">TRAINING PLAN</div><h1 id="training-title">30日間のトレーニング</h1><p>筋力・持久力・フットワークを、少しずつ取り戻す。</p></div><span class="page-counter">NOV 03 — DEC 03</span></div>
+          <div class="page-intro"><div><div class="eyebrow">TRAINING PLAN</div><h1 id="training-title">30日間のトレーニング</h1><p>1日約60分。強度の高い日と回復日を分けて、動ける身体を作る。</p></div><span class="page-counter">NOV 03 — DEC 03</span></div>
           <div class="training-top-grid">
             <div class="callout-card"><div class="eyebrow">THIS WEEK</div><h2 id="current-week-title">第1週｜身体を慣らす</h2><p id="current-week-copy">最初は正確な動作と回復を優先。無理な全力ダッシュは行わない。</p></div>
-            <label class="clearance-control"><input type="checkbox" id="clearance-check"><span class="custom-switch"></span><span><strong>高強度運動の医師確認済み</strong><small>未確認の場合、ダッシュ系は実施しないでください</small></span></label>
+            <div class="activity-target">毎日 <strong>60分</strong><small>回復日は散歩・ストレッチ中心</small></div>
           </div>
           <div class="section-head week-select-head"><div><div class="eyebrow">SCHEDULE</div><h2>日別スケジュール</h2></div><div class="week-tabs" id="week-tabs" role="group" aria-label="週を選ぶ"></div></div>
-          <div class="schedule" id="schedule"></div>
+          <div class="schedule" id="schedule"></div><div class="card training-detail" id="training-detail"></div>
           <div class="section-head workout-library-heading"><div><div class="eyebrow">EXERCISE GUIDE</div><h2>メニューの内容</h2></div></div>
           <div class="exercise-grid" id="exercise-library"></div>
         </section>
 
         <section class="page" id="page-meals" aria-labelledby="meals-title">
           <div class="page-intro"><div><div class="eyebrow">SIMPLE NUTRITION</div><h1 id="meals-title">食事メニュー</h1><p>冷食を温めて、そのまま食べる。余計な調理はしない。</p></div><span class="page-counter">EAT • TRAIN • RECOVER</span></div>
-          <div class="nutrition-cards"><div><span>1日のカロリー目標</span><strong>2,200–2,500 <small>kcal</small></strong><p>開始時点の推定目安。体調・体重推移で調整</p></div><div><span>たんぱく質目標</span><strong>80–100 <small>g</small></strong><p>昼・夕方・夜に分散して摂るのが理想</p></div><div><span>現在の体格</span><strong>173 <small>cm</small> / 57 <small>kg</small></strong><p>体重を落とさずに動ける身体を作る</p></div></div>
+          <div class="nutrition-cards"><div><span>1日のカロリー目標</span><strong><span id="meal-kcal-target">設定待ち</span> <small>kcal</small></strong><p>開始時点の推定目安。体調・体重推移で調整</p></div><div><span>たんぱく質目標</span><strong><span id="meal-protein-target">設定待ち</span> <small>g</small></strong><p>昼・夕方・夜に分散して摂るのが理想</p></div><div><span>現在の体格</span><strong id="meal-body-value">体格未設定</strong><p>体重を落とさずに動ける身体を作る</p></div></div>
           <div class="section-head"><div><div class="eyebrow">DAILY ROUTINE</div><h2>毎日これでOK</h2></div></div>
           <div class="routine-grid" id="routine-grid"></div>
+          <div class="card diary-card">
+            <div class="section-head"><div><div class="eyebrow">FOOD JOURNAL</div><h2>食事の記録</h2></div><label class="date-control">日付 <input id="food-log-date" type="date" min="2026-11-01"></label></div>
+            <p class="diary-hint">食べたものを1品ずつ登録。プロテインも記録可能です。栄養値は商品ラベルを見て修正してください。</p>
+            <div class="diary-summary" id="food-summary"></div>
+            <form id="food-log-form" class="diary-form">
+              <label>タイミング<select id="food-log-meal"><option value="朝">朝</option><option value="昼">昼</option><option value="夕方">夕方</option><option value="夜">夜</option><option value="運動後">運動後</option><option value="その他">その他</option></select></label>
+              <label>食品を選ぶ<select id="food-preset"></select></label>
+              <label class="diary-wide">食品名<input id="food-name" type="text" maxlength="70" required placeholder="例：ホエイプロテイン"></label>
+              <label>個数・回数<input id="food-quantity" type="number" min="0.1" max="20" step="0.1" value="1" required></label>
+              <label>1回分のカロリー (kcal)<input id="food-kcal" type="number" min="0" max="5000" step="1" required></label>
+              <label>1回分のタンパク質 (g)<input id="food-protein" type="number" min="0" max="300" step="0.1" required></label>
+              <button class="primary-action" type="submit">＋ 食事記録を追加</button>
+            </form>
+            <div id="food-log-list" class="food-log-list"></div>
+          </div>
           <div class="section-head"><div><div class="eyebrow">DINNER VARIATIONS</div><h2>夜ご飯は3パターン</h2></div><span class="section-side-note">全部、別々にレンジで温めるだけ</span></div>
           <div class="dinner-tabs" role="tablist" aria-label="夕食パターン" id="dinner-tabs"></div>
           <div class="dinner-panel" id="dinner-panel"></div>
           <div class="food-note"><svg><use href="#i-alert"/></svg><div><strong>食事について</strong><p>食品によって栄養量が異なるため、上の目標に届くかは商品ラベルで確認。朝を抜く場合は不足しやすいので、牛乳・ヨーグルト・バナナなども追加できるとより良いです。カップ麺＋ラーメンの日は塩分に注意し、スープを残しましょう。</p></div></div>
         </section>
 
+        <section class="page" id="page-profile" aria-labelledby="profile-title">
+          <div class="page-intro"><div><div class="eyebrow">PERSONAL SETTINGS</div><h1 id="profile-title">プロフィール</h1><p>ユーザーごとに体格・運動・食事記録を分けて管理します。</p></div></div>
+          <div class="card profile-card">
+            <div class="section-head"><div><div class="eyebrow">USERS</div><h2>ユーザー切り替え</h2></div></div>
+            <div class="profile-switch"><select id="profile-selector" aria-label="ユーザーを選択"></select><button id="add-profile" class="outline-btn" type="button">＋ ユーザー追加</button></div>
+            <form id="profile-form" class="profile-form">
+              <label>ユーザー名<input id="profile-name" type="text" maxlength="30" required placeholder="名前"></label>
+              <label>身長（cm）<input id="profile-height" type="number" min="100" max="240" step="0.1" placeholder="例：173"></label>
+              <label>体重（kg）<input id="profile-weight" type="number" min="25" max="250" step="0.1" placeholder="例：57"></label>
+              <label>年齢（任意）<input id="profile-age" type="number" min="10" max="110" step="1" placeholder="例：26"></label>
+              <button class="primary-action" type="submit">プロフィールを保存</button>
+            </form>
+            <div id="profile-overview" class="profile-overview"></div>
+            <p class="diary-hint">複数ユーザーに対応していますが、アカウント認証や端末間同期はありません。記録はこのブラウザーの中だけに保存されます。</p>
+          </div>
+        </section>
         <section class="page" id="page-shopping" aria-labelledby="shopping-title">
           <div class="page-intro"><div><div class="eyebrow">WEEKLY GROCERY</div><h1 id="shopping-title">買い物リスト</h1><p>買い出しは週1回。チェックを付けながら揃える。</p></div><button class="outline-btn" id="copy-shopping">リストをコピー ↗</button></div>
           <div class="card shopping-config"><div class="eyebrow">DINNER PATTERN</div><h2>1週間の夕食パターン</h2><p>夕食の回数に合わせて、必要な冷食の量が自動で変わります。</p><div class="mode-buttons" id="shopping-modes"><button class="mode-button active" data-mode="allA">Aを7回（いつもの）</button><button class="mode-button" data-mode="mixed">A×5 / B×1 / C×1</button></div></div>
@@ -131,7 +162,7 @@
     <button class="bottom-nav-item active" data-page="home"><svg><use href="#i-grid"/></svg><span>ホーム</span></button>
     <button class="bottom-nav-item" data-page="training"><svg><use href="#i-activity"/></svg><span>運動</span></button>
     <button class="bottom-nav-item" data-page="meals"><svg><use href="#i-utensils"/></svg><span>食事</span></button>
-    <button class="bottom-nav-item" data-page="shopping"><svg><use href="#i-bag"/></svg><span>買い物</span></button>
+    <button class="bottom-nav-item" data-page="shopping"><svg><use href="#i-bag"/></svg><span>買い物</span></button><button class="bottom-nav-item" data-page="profile"><svg><use href="#i-grid"/></svg><span>設定</span></button>
   </nav>
   <div class="toast" role="status" aria-live="polite" id="toast"></div>
 </body>
