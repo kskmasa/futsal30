@@ -26,6 +26,7 @@ jobs:
         run: |
           node --check app.js
           node --check features.js
+          node --check workout-log.js
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload static files
