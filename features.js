@@ -189,7 +189,7 @@ function initFeatures(){
   if(db.users.length>=20){showToast('登録できるユーザーは20人までです');return;}
   persist();
   const id=uid();
-  db.users.push(normalize({id,name:`ユーザー${db.users.length+1}`,height:null,weight:null,age:null,data:deepCopy(DEFAULT_STATE),foods:{},weights:{},activityDone:{}}));
+  db.users.push(normalize({id,name:`ユーザー${db.users.length+1}`,height:null,weight:null,age:null,data:{...deepCopy(DEFAULT_STATE),workouts:{}},foods:{},weights:{},activityDone:{}}));
   db.active=id;state=deepCopy(active().data);persist();renderAll();showToast('新しいユーザーを追加しました');
  });
  $('profile-form').addEventListener('submit',ev=>{
