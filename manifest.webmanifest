@@ -1,0 +1,19 @@
+{
+  "name": "FUTSAL 30 - 30日間の身体づくり",
+  "short_name": "FUTSAL 30",
+  "description": "フットサルの試合に向けた30日間のトレーニング・食事トラッカー",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f8f7",
+  "theme_color": "#112b2b",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
