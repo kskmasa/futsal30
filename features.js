@@ -155,6 +155,15 @@ function renderWeight(){
  $('weight-chart').innerHTML=`<svg class="weight-svg" viewBox="0 0 520 165" role="img" aria-label="記録された体重の推移"><line x1="30" y1="27" x2="490" y2="27" stroke="#e9efea"/><line x1="30" y1="76" x2="490" y2="76" stroke="#e9efea"/><line x1="30" y1="125" x2="490" y2="125" stroke="#e9efea"/><text x="3" y="30" fill="#82968c" font-size="11">${hi.toFixed(1)}</text><text x="3" y="128" fill="#82968c" font-size="11">${lo.toFixed(1)}</text><polyline points="${points}" fill="none" stroke="#39885f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${pts.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="4.5" fill="#39885f"><title>${p.date}: ${p.value} kg</title></circle>`).join('')}<text x="40" y="153" font-size="11" fill="#82968c">${escapeText(subset[0][0].slice(5))}</text><text x="475" y="153" text-anchor="end" font-size="11" fill="#82968c">${escapeText(subset[subset.length-1][0].slice(5))}</text></svg>`;
  }
  $('weight-records').innerHTML=values.slice(-10).reverse().map(([date,w])=>`<div class="log-row"><span>${escapeText(date)}</span><strong>${Number(w).toFixed(1)} kg</strong><button type="button" data-delete-weight="${date}" aria-label="${date}の体重記録を削除">削除</button></div>`).join('');
+
+ const importEl=$('weight-import-nov5');
+ if(importEl){
+  const date='2026-11-05',hasRecord=Object.prototype.hasOwnProperty.call(active().weights,date);
+  importEl.innerHTML=!hasRecord
+   ? '<div class="weight-import-inner"><div><strong>11月5日 朝の体重：60.7kg</strong><small>会話で報告した計測値を、このユーザーの記録に保存できます。</small></div><button type="button" class="outline-btn" id="import-nov5-weight">11/5の体重を記録</button></div>'
+   : '<div class="weight-import-inner"><div><strong>11月5日の体重は記録済み</strong><small>現在の記録：'+Number(active().weights[date]).toFixed(1)+'kg。数値を変更する場合は上の入力欄から保存してください。</small></div></div>';
+ }
+
 }
 function foodRecords(date=foodDate){return Array.isArray(active().foods[date])?active().foods[date]:[];}
 function foodTotals(date=foodDate){return foodRecords(date).reduce((a,r)=>({cal:a.cal+Number(r.kcal||0)*Number(r.qty||1),protein:a.protein+Number(r.protein||0)*Number(r.qty||1)}),{cal:0,protein:0});}
@@ -225,6 +234,14 @@ function initFeatures(){
   const el=ev.target;if(el.matches('[data-activity-date]'))toggleActivity(el.dataset.activityDate,Number(el.dataset.activityIndex),el.checked);
  });
  document.addEventListener('click',ev=>{
+  if(ev.target.closest('#import-nov5-weight')){
+   const date='2026-11-05';
+   if(Object.prototype.hasOwnProperty.call(active().weights,date)){showToast('この日付の記録はすでにあります');return;}
+   active().weights[date]=60.7;
+   persist();renderWeight();renderTargets();renderFoodDiary();renderProfile();
+   showToast('11月5日の体重60.7kgを記録しました');
+   return;
+  }
   const weightButton=ev.target.closest('[data-delete-weight]');
   if(weightButton){delete active().weights[weightButton.dataset.deleteWeight];persist();renderWeight();renderTargets();renderFoodDiary();renderProfile();return;}
   const foodButton=ev.target.closest('[data-delete-food]');
