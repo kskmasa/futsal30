@@ -1,6 +1,6 @@
 (function workoutJournal() {
   'use strict';
-  const KEY='futsal30-workout-journal-v1', DATE='2026-11-04';
+  const KEY='futsal30-workout-journal-v1', DATE='2026-11-04', DATE2='2026-11-05';
   const $=id=>document.getElementById(id);
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const original=[
@@ -13,6 +13,16 @@
     {id:'chat-press-1104',name:'ショルダープレス（座位）',reps:20,sets:2,note:'片手500mlペットボトル2本（約1kg）'},
     {id:'chat-raise-1104',name:'サイドレイズ（座位）',reps:20,sets:2,note:'片手500mlペットボトル2本（約1kg）'},
     {id:'chat-scap-1104',name:'肩甲骨寄せ（座位）',reps:20,sets:2,note:'腕の重さで実施したか器具使用か未確認'}
+  ];
+  const nov5=[
+    {id:'chat-1105-abs',name:'腹筋',reps:20,sets:2,note:'20回×2セット'},
+    {id:'chat-1105-push',name:'腕立て伏せ',reps:20,sets:2,note:'20回×2セット'},
+    {id:'chat-1105-warm',name:'肩回し・腕回し',reps:20,sets:1,note:'前後20回ずつ（ウォームアップ）'},
+    {id:'chat-1105-scap',name:'肩甲骨寄せ（座位）',reps:15,sets:2,note:'2秒キープ／15回×2セット'},
+    {id:'chat-1105-row',name:'シーテッドロー（座位）',reps:12,sets:2,note:'12回×2セット'},
+    {id:'chat-1105-prayer',name:'胸の合掌プレス',reps:5,sets:1,note:'各10秒キープ、計5回'},
+    {id:'chat-1105-rotation',name:'肩の外旋運動',reps:12,sets:2,note:'左右各12回×2セット'},
+    {id:'chat-1105-stretch',name:'首・肩・腕のストレッチ',reps:1,sets:1,note:'各20秒程度'}
   ];
   const proposed=[
     {name:'ショルダープレス（座位）',reps:10,sets:2,note:'肩／ペットボトルなど軽い負荷'},
@@ -74,9 +84,11 @@
     $('workout-log-items').innerHTML=entries.length?entries.map(x=>`<div class="workout-log-item"><div><strong>${esc(x.name)}</strong><small>${esc(x.reps)}回 × ${esc(x.sets)}セット${x.note?' ／ '+esc(x.note):''}</small></div><button type="button" data-remove-exercise="${esc(x.id)}">削除</button></div>`).join(''):'<p class="diary-hint">まだこの日の実績はありません。</p>';
     const box=$('workout-import');
     {
-      const pending=original.filter(x=>!get(DATE).some(y=>y.id===x.id));
-      box.hidden=!pending.length;
-      box.innerHTML=pending.length?`<h3>11月4日に実施した9種目（会話の記録）</h3><p>端末内の記録はGitHubから直接書き換えられないため、ワンタップでこのユーザーに保存できます。</p><ul>${pending.map(x=>`<li>${esc(x.name)}：${x.reps}回 × ${x.sets}セット</li>`).join('')}</ul><button type="button" id="import-nov4-exercises">11/4の実績を取り込む（残り${pending.length}種目）</button>`:'';
+      const pending4=original.filter(x=>!get(DATE).some(y=>y.id===x.id));
+      const pending5=nov5.filter(x=>!get(DATE2).some(y=>y.id===x.id));
+      box.hidden=!(pending4.length||pending5.length);
+      const section=(date,pending,all,button)=>pending.length?`<div class="workout-import-section"><h3>${date}に実施した${all.length}種目</h3><p>会話で報告済みの内容。ボタンを押すと今のプロフィールに記録します。</p><ul>${pending.map(x=>`<li>${esc(x.name)}：${x.reps}回 × ${x.sets}セット${x.note?' ／ '+esc(x.note):''}</li>`).join('')}</ul><button type="button" id="${button}">${date}の実績を取り込む（残り${pending.length}種目）</button></div>`:'';
+      box.innerHTML=section('11/5',pending5,nov5,'import-nov5-exercises')+section('11/4',pending4,original,'import-nov4-exercises');
     }
     $('upperbody-options').innerHTML=proposed.map((x,i)=>`<div class="upperbody-item"><div><strong>${esc(x.name)}</strong><small>${x.reps}回 × ${x.sets}セット・${esc(x.note)}</small></div><button type="button" data-add-upper="${i}">実施したら記録</button></div>`).join('');
     const dash=$('home-exercise-journal');
@@ -91,6 +103,11 @@
   document.addEventListener('click',e=>{
     if(e.target.closest('#import-nov4-exercises')){
       const rest=original.filter(x=>!get(DATE).some(y=>y.id===x.id));mutate(DATE,a=>[...a,...rest]);selected=DATE;render();return;
+    }
+    if(e.target.closest('#import-nov5-exercises')){
+      const rest=nov5.filter(x=>!get(DATE2).some(y=>y.id===x.id));
+      if(rest.length)mutate(DATE2,a=>[...a,...rest]);
+      selected=DATE2;render();return;
     }
     const remove=e.target.closest('[data-remove-exercise]');
     if(remove){mutate(selected,a=>a.filter(x=>x.id!==remove.dataset.removeExercise));render();return;}
